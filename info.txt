@@ -1,0 +1,148 @@
+class CSP
+CSP(X, C)
+
+
+make_node_consistent
+has_singleton_domains ?
+has_empty_domain ?
+
+make_arc_consistent
+has_singleton_domains ?
+has_empty_domain ?
+
+make_path_consistent
+has_singleton_domains ?
+has_empty_domain ?
+
+backtracking
+
+
+class Constraint
+is_consistent
+
+
+
+solve
+
+class Variable<T>
+Domain<T>
+
+
+
+set<Variable> X;
+set<Constraint> C;
+
+BinaryConstraint<T>
+is_consistent(Variable<T> a, Variable<T> b)
+
+
+
+GlobalConstraint<T>
+
+
+
+
+
+X : Set of variables
+D : Set of domains for each variable
+C : Set of constraints that specify allowable cominations of values.
+
+Cj : <scope, all variables that participate in the constraint, rel, relation represented as a set of tuples or a function that can compute whether a tuple is a member of the relation>
+Consistent:
+Assignment that does not violate any constraint
+
+
+discrete, finite domains
+map coloring
+sudoku
+scheduling with time limits
+n queens
+
+
+types of constraints
+unary: can be specified as domain
+binary: relates two variables, can be represented as a constraint graph
+
+higher-order constraints, global
+
+alldiff
+
+constraint hypergraph, ordinary nodes and hypernodes (squares) that represent n-ary constraints
+
+only absolute constraints
+
+
+constraint propagation, use constraints to reduce the number of legal values for a variable, which can propagate to other variables
+may be intertwined with search or done as a preprocessing step before search
+
+LOCAL CONSISTENCY, enforce local consistency in each part of the graph, causes inconsistent values to be eliminated.
+
+
+types of local consistency
+
+node consistency: single variable satisfies its unary constraints
+easy, eliminate all unary constraints by reducing the domain
+
+work only with binary constraints, assumed to be deleted by the user
+
+
+arc consistent: every value in its domain satisfies the variable's binary constraints
+
+arc-3, most popular algorithm for enforcing arc consistency:
+
+queue of all edges, two since it's undirected
+while is not empty, pop and make i consistent with j
+if it reduced the domain, add all arcs that reach xi to the queue. if the domain contains 0, there is no solution
+
+
+
+path consistency
+consistency with triples of variables
+for all pairs of consistent assignments in two variables, there is an assignment in Xm that satisfies constraints in {Xi, Xm} and (Xm, Xj)
+this is also called 3-consistent
+
+2 consistency is common, 3 consistency less. Which to choose?
+
+Instead of representing constraints as enumerating tuples, we may want to implement them as functions
+
+global constraints, arbitrary number of variables. For alldiff, if n possible distinct values, m variables, and m > n, the constraint cannot be satisfied.
+
+algorithm: remove singleton domain variables, delete that value from remaining domains, repeat as long as there are singletons. if an empty domain is produced or there are more variables than domain values left, inconsistency.
+
+
+for sudoku:
+csp with 9x9 = 81 variables
+a1 ... a9
+...
+i1 ... i9
+empty squares domain {1 ... 9}
+prefilled singleton
+
+27 alldiff constraints
+for each row
+for each col
+for each 3x3 square
+
+expanded alldiff into binary constraints
+
+apply ac2, then pc2, if not solved, then backtracking
+
+
+finish constraint propagation with variables with multiple possible valeus. we have to search
+
+backtracking that work on partial assignments
+
+apply backtracking search
+domain-independent heuristics:
+
+select unassigned variable
+
+order domain values
+
+inference
+
+backtrack more than one step
+
+save and reuse partial results
+
+
