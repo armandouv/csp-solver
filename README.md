@@ -1,2 +1,2 @@
 # csp-solver
-A constraint satisfaction problems solver written in C++
+A constraint satisfaction problem solver written in C++
